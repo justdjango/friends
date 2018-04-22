@@ -1,0 +1,11 @@
+{% extends 'accounts/base_.html' %}
+
+{% block content %}
+
+	<ul>
+	{% for user_p in users %}
+		<li><a href="{{ user_p.get_absolute_url }}">{{ user_p }}</a></li>
+	{% endfor %}
+	</ul>
+
+{% endblock %}

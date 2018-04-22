@@ -1,0 +1,46 @@
+{% extends 'accounts/base_.html' %}
+
+{% block content %}
+
+	<div class="container text-center">
+	<span><a href="/users/">Home</a></span>
+	
+	{% if request.user == u %}
+
+		<h1>Friends</h1>
+		
+		{% for friend in friends_list %}
+			<a href="{{ friend.user.profile.get_absolute_url }}">{{ friend.user.username }}</a>
+		{% endfor %}
+		<hr>
+		<h2>Sent Friend requests</h2>
+		<ul>
+		{% for s_request in sent_friend_requests %}
+			<li>{{ s_request.to_user.username }}</li>
+		{% endfor %}
+		</ul>
+		<hr>
+		<h2>Received Friend requests</h2>
+		
+		{% for r_request in rec_friend_requests %}
+			<p><a href="{{ r_request.from_user.profile.get_absolute_url }}">{{ r_request.from_user.username }}</a></p>
+			<small><a class='btn btn-primary' href="/users/friend-request/accept/{{ r_request.from_user.id }}">Accept</a></small>
+			<small><a class='btn btn-warning' href="/users/friend-request/delete/{{ r_request.from_user.id }}">Ignore</a></small>
+		{% endfor %}
+		
+
+	{% else %}
+
+		{% if button_status == 'not_friend' %}
+			<small><a class='btn btn-primary' href="/users/friend-request/send/{{ u.id }}">Add Friend</a></small>
+		{% elif button_status == 'friend_request_sent' %}
+			<small><a class="btn btn-warning" href="/users/friend-request/cancel/{{ u.id }}">Cancel Request</a></small>
+		{% endif %}
+
+	{% endif %}
+
+	</div>
+
+{% endblock %}
+
+
